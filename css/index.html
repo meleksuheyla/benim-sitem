@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melek - Patili Dostlarımız İçin Mama Rehberi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar glass">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-paw logo-icon"></i>
+                <h1>Mama Yorumları Sitesi</h1>
+            </div>
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically injected based on auth state -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero glass-hero">
+        <div class="hero-content">
+            <h2>Dostlarımız İçin En İyisi</h2>
+            <p>Gerçek hayvanseverlerin, ticari kaygı olmadan paylaştığı mama deneyimleri. Satış yok, reklam yok, sadece dürüst yorumlar.</p>
+            <div class="hero-buttons" id="hero-buttons">
+                <!-- Dynamically injected -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar glass-panel">
+            <h3>Filtreler</h3>
+            <div class="filter-group">
+                <label>Hayvan Türü</label>
+                <select id="filter-animal">
+                    <option value="all">Tümü</option>
+                    <option value="kedi">Kedi</option>
+                    <option value="köpek">Köpek</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Cins</label>
+                <select id="filter-breed">
+                    <option value="all">Tümü</option>
+                    <option value="scottish">Scottish (Kedi)</option>
+                    <option value="british">British (Kedi)</option>
+                    <option value="sarman">Sarman (Kedi)</option>
+                    <option value="golden">Golden Retriever (Köpek)</option>
+                    <option value="terrier">Terrier (Köpek)</option>
+                    <option value="kangal">Kangal (Köpek)</option>
+                    <option value="diger">Diğer</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Yaş</label>
+                <select id="filter-age">
+                    <option value="all">Tümü</option>
+                    <option value="yavru">Yavru</option>
+                    <option value="yetiskin">Yetişkin</option>
+                    <option value="anne">Anne</option>
+                    <option value="kisir">Kısırlaştırılmış</option>
+                    <option value="yasli">Yaşlı</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Mamanın Yararı</label>
+                <select id="filter-benefit">
+                    <option value="all">Tümü</option>
+                    <option value="olumlu">Olumlu</option>
+                    <option value="olumsuz">Olumsuz</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Fiyat Aralığı</label>
+                <select id="filter-price">
+                    <option value="all">Tümü</option>
+                    <option value="uygun">Uygun</option>
+                    <option value="fp">Fiyat/Performans</option>
+                    <option value="pahalli">Pahallı</option>
+                </select>
+            </div>
+            <button id="apply-filters-btn" class="btn btn-primary">Filtrele</button>
+        </aside>
+
+        <!-- Feed Section -->
+        <section class="feed-section">
+            <div class="feed-header">
+                <h3>Son Yorumlar</h3>
+                <button id="add-review-btn" class="btn btn-secondary hidden"><i class="fa-solid fa-plus"></i> Yeni Yorum Ekle</button>
+            </div>
+            <div id="reviews-container" class="reviews-container">
+                <!-- Reviews will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <span class="close-modal">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tab-login">Giriş Yap</button>
+                <button class="tab-btn" id="tab-register">Kayıt Ol</button>
+            </div>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>E-posta veya Telefon Numarası</label>
+                    <input type="text" id="auth-identifier" required placeholder="E-posta / Telefon">
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" id="auth-password" required placeholder="Şifreniz">
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="auth-submit-btn">Giriş Yap</button>
+            </form>
+            <div class="guest-action">
+                <p>veya</p>
+                <button id="guest-login-btn" class="btn btn-outline w-100">Misafir Kullanıcı Olarak Devam Et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Review Modal -->
+    <div id="review-modal" class="modal hidden">
+        <div class="modal-content glass-panel modal-lg">
+            <span class="close-modal">&times;</span>
+            <h2 id="review-modal-title">Mama Yorumu Ekle</h2>
+            <p class="modal-warning"><i class="fa-solid fa-triangle-exclamation"></i> Lütfen yorumunuzda iletişim bilgisi, telefon numarası paylaşmayın. Satış/reklam amaçlı gönderiler anında silinecektir.</p>
+            <form id="review-form">
+                <input type="hidden" id="review-id">
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label>Hayvan Türü *</label>
+                        <select id="review-animal" required>
+                            <option value="">Seçiniz</option>
+                            <option value="kedi">Kedi</option>
+                            <option value="köpek">Köpek</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label>Cins *</label>
+                        <select id="review-breed" required>
+                            <option value="">Seçiniz</option>
+                            <option value="scottish">Scottish</option>
+                            <option value="british">British</option>
+                            <option value="sarman">Sarman</option>
+                            <option value="golden">Golden Retriever</option>
+                            <option value="terrier">Terrier</option>
+                            <option value="kangal">Kangal</option>
+                            <option value="diger">Diğer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label>Yaş *</label>
+                        <select id="review-age" required>
+                            <option value="">Seçiniz</option>
+                            <option value="yavru">Yavru</option>
+                            <option value="yetiskin">Yetişkin</option>
+                            <option value="anne">Anne</option>
+                            <option value="kisir">Kısırlaştırılmış</option>
+                            <option value="yasli">Yaşlı</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label>Mamanın Yararı *</label>
+                        <select id="review-benefit" required>
+                            <option value="">Seçiniz</option>
+                            <option value="olumlu">Olumlu</option>
+                            <option value="olumsuz">Olumsuz</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Fiyat Aralığı *</label>
+                    <select id="review-price" required>
+                        <option value="">Seçiniz</option>
+                        <option value="uygun">Uygun</option>
+                        <option value="fp">Fiyat/Performans</option>
+                        <option value="pahalli">Pahallı</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fotoğraf URL (Opsiyonel)</label>
+                    <input type="url" id="review-photo" placeholder="https://ornek-resim-linki.com/resim.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Yorumunuz *</label>
+                    <textarea id="review-content" rows="4" required placeholder="Mama hakkında detaylı deneyiminiz..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Paylaş</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
